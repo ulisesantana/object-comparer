@@ -1,0 +1,25 @@
+{
+  "name": "object-comparer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "concurrently --kill-others \"tsc -w\" \"nodemon dist/index.js\"",
+    "test": "mocha --require ts-node/register 'test/**/*.test.ts'",
+    "tdd": "npm run test -- --watch-extensions ts --watch"
+  },
+  "author": "Ulises Santana Suárez  <ulisesantana@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "typescript": "^2.9.2"
+  },
+  "devDependencies": {
+    "@types/mocha": "^2.2.43",
+    "@types/node": "^8.0.34",
+    "concurrently": "^3.6.0",
+    "mocha": "^4.0.1",
+    "nodemon": "^1.12.1",
+    "ts-node": "^3.3.0"
+  }
+}
