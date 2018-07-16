@@ -2,7 +2,9 @@ export default function objectComparer(obj: object, model: object, strict=false)
   return Object.entries(model).every(([key, value]) => {
     if (value instanceof Object) {
       return objectComparer(obj[key], model[key]);
-    } else if (hasProperty(obj,model,key,strict) || propertyIsOptional(model,key)) {
+    } else if (propertyIsOptional(model[key])) {
+        return strict ? hasProperty(obj,model,key,strict) : true
+    } else if (hasProperty(obj,model,key,strict)) {
       return true
     }
     return false;
@@ -10,13 +12,13 @@ export default function objectComparer(obj: object, model: object, strict=false)
 }
 
 function hasProperty(obj: object, model: object, key: string, strict: boolean): boolean{
-  return strict 
+  return strict
     ? obj.hasOwnProperty(key) && checkTypes(processValue(model[key]), obj[key])
     : obj.hasOwnProperty(key);
 }
 
-function propertyIsOptional(model: object, key: string){
-  return model[key] && model[key] instanceof String && model[key].includes('?')
+function propertyIsOptional(modelValue: string | any): boolean{
+  return typeof modelValue === 'string' && modelValue.includes('?')
 }
 
 function checkTypes(types: any[], value): boolean{
@@ -26,9 +28,9 @@ function checkTypes(types: any[], value): boolean{
 function checkType(value, modelValue): boolean{
   switch (modelValue){
     case 'string':
-      return value instanceof String;
+      return value instanceof String || typeof value === 'string';
     case 'number':
-      return value instanceof Number;
+      return value instanceof Number || typeof value === 'number';
     case 'array':
       return value instanceof Array;
     case 'object':
@@ -38,7 +40,7 @@ function checkType(value, modelValue): boolean{
 }
 
 function processValue(string): string[] | null[]{
-  return string instanceof String 
+  return typeof string === 'string'
     ? string.toLowerCase().replace(/\?/g,'').split('|')
     : [null];
 }
