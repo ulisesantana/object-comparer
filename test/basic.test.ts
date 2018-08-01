@@ -4,7 +4,7 @@ import oc from '../src/lib';
 describe('Basic tests', function () {
 
     it('Should recognize same plain object', function () {
-        const obj = {a: 10, b: 10, c: 10};
+        const obj = {a: 10, b: 10, c: ()=>'meh'};
         assert.deepStrictEqual(oc(obj, obj), true);
     });
 
@@ -30,11 +30,11 @@ describe('Strict mode (also compare the values types)', function () {
     const strict = true;
 
     it('Should recognize same plain object with exact same types as model', function () {
-        const model = {a: 'number', b: 'string', c: 'array', d: 'boolean'};
-        const obj = {a: 10, b: 'meh', c: [], d: false};
-        const obj2 = {a: 10, b: 2, c: [], d: false};
-        const obj3 = {a: null, b: 'meh', c: [], d: false};
-        const obj4 = {a: 10, b: 'meh', c: {}, d: false};
+        const model = {a: 'number', b: 'string', c: 'array', d: 'boolean', e: 'any'};
+        const obj = {a: 10, b: 'meh', c: [], d: false, e: 2};
+        const obj2 = {a: 10, b: 2, c: [], d: false, e: 'meh'};
+        const obj3 = {a: null, b: 'meh', c: [], d: false, e: ()=>'meh'};
+        const obj4 = {a: 10, b: 'meh', c: {}, d: false, e: []};
         assert.deepStrictEqual(oc(obj, model, strict), true);
         assert.deepStrictEqual(oc(obj2, model, strict), false);
         assert.deepStrictEqual(oc(obj3, model, strict), false);
@@ -71,11 +71,13 @@ describe('Strict mode (also compare the values types)', function () {
         assert.deepStrictEqual(oc(obj3, model, strict), true);
     });
 
-    it('Should recognize nested objects', function () {
-        const model = {a: 'number', b: {c: 'string', d: {f: [{g: 'array'}, {m: 'boolean'}]}}};
-        const obj1 = {a: 10, b: {c: 'meh', d: {f: [{g: []}, {m: false}]}}};
+    xit('Should recognize nested objects', function () {
+        const model = {a: 'number', b: {c: 'number', d: {f: [{g: 'array'}, {m: 'boolean'}]}}};
+        const obj1 = {a: 10, b: {c: 2, d: {f: [{g: []}, {m: false}]}}};
         const obj2 = {a: 10, b: {c: 'meh', d: {f: [{g: true}, {M: true}]}}};
-        assert.deepStrictEqual(oc(obj2, model), false);
-        assert.deepStrictEqual(oc(obj1, model), true);
+        const obj3 = {a: 10, b: {c: 'buh', d: {f: [{g: []}, {m: false}]}}};
+        // assert.deepStrictEqual(oc(obj1, model, strict), true);
+        // assert.deepStrictEqual(oc(obj2, model, strict), false);
+        assert.deepStrictEqual(oc(obj3, model, strict), false);
     });
 });

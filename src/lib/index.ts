@@ -2,7 +2,9 @@ export default function objectComparer(obj: object, model: object, strict=false)
   return Object.entries(model).every(([key, value]) => {
 
     if (value instanceof Object) {
-      return objectComparer(obj[key], model[key]);
+      return key
+          ? objectComparer(obj[key], model[key])
+          : objectComparer(obj, model);
     }
 
     if (propertyIsOptional(model[key])) {
@@ -35,6 +37,8 @@ function checkTypes(types: any[], value): boolean{
 
 function checkType(value, modelValue): boolean{
   switch (modelValue){
+    case 'any':
+      return true;
     case 'string':
       return value instanceof String || typeof value === 'string';
     case 'number':
@@ -44,13 +48,10 @@ function checkType(value, modelValue): boolean{
     case 'boolean':
       return value instanceof Boolean || typeof value === 'boolean';
     case 'object':
-    default:
       return value instanceof Object || typeof value === 'object';
   }
 }
 
-function processValue(string): string[] | null[]{
-  return typeof string === 'string'
-    ? string.toLowerCase().replace(/\?/g,'').split('|')
-    : [null];
+function processValue(string): string[]{
+  return string.toLowerCase().replace(/\?/g,'').split('|')
 }
