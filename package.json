@@ -3,19 +3,33 @@
   "version": "1.0.0",
   "description": "",
   "main": "lib/index.js",
+  "files": [
+    "lib/*"
+  ],
   "scripts": {
     "build": "tsc",
-    "test": "mocha --require ts-node/register 'test/**/*.test.ts'",
-    "tdd": "npm run test -- --watch-extensions ts --watch"
+    "test": "jest",
+    "tdd": "npm t -- --watch"
   },
   "author": "Ulises Santana Suárez  <ulisesantana@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "@types/mocha": "^2.2.43",
-    "@types/node": "^8.0.34",
-    "typescript": "^2.9.2",
-    "mocha": "^4.0.1",
-    "nodemon": "^1.12.1",
-    "ts-node": "^3.3.0"
+    "@types/jest": "^24.0.9",
+    "@types/node": "^11.10.4",
+    "jest": "^24.1.0",
+    "npm-analyze": "^1.1.0",
+    "ts-jest": "^24.0.0",
+    "typescript": "^3.3.3333"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.ts?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.ts$",
+    "moduleFileExtensions": [
+      "ts",
+      "js",
+      "json"
+    ]
   }
 }

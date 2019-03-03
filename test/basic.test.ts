@@ -1,5 +1,5 @@
 import * as assert from 'assert';
-import oc from '../src/lib';
+import oc from '../src';
 
 describe('Basic tests', function () {
 
@@ -24,7 +24,6 @@ describe('Basic tests', function () {
         assert.deepStrictEqual(oc(obj1, model), true);
     });
 
-
     describe('Strict mode (also compare the values types)', function () {
         const strict = true;
 
@@ -43,11 +42,13 @@ describe('Basic tests', function () {
         });
 
         it('Should recognize nested objects', function () {
-            const model = { a: null, b: { c: null, d: { f: [{ g: null }, { m: null }] } } };
-            const obj1 = { a: 10, b: { c: null, d: { f: [{ g: true }, { m: false }] } } };
+            const model = { a: 'number?', b: { c: null, d: { f: [{ g: null }, { m: 'string|number' }] } } };
+            const obj1 = { a: 10, b: { c: null, d: { f: [{ g: true }, { m: 'neh' }] } } };
             const obj2 = { a: 10, b: { c: null, d: { f: [{ g: true }, { M: true }] } } };
-            assert.deepStrictEqual(oc(obj2, model, strict), false);
+            const obj3 = { b: { c: null, d: { f: [{ g: true }, { m: 42 }] } } };
             assert.deepStrictEqual(oc(obj1, model, strict), true);
+            assert.deepStrictEqual(oc(obj2, model, strict), false);
+            assert.deepStrictEqual(oc(obj3, model, strict), true);
         });
     })
-})
+});

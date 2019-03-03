@@ -1,5 +1,5 @@
 import * as assert from 'assert';
-import { checkTypes, propertyIsOptional, processModelType } from '../src/lib';
+import { checkTypes, propertyIsOptional, processModelType } from '../src/utils';
 
 describe('Utils for Object comparer', function() {
   it('Should recognize an optional property', function () {
