@@ -1,6 +1,6 @@
 import {hasProperty, isAnObject, propertyIsOptional} from "./utils";
 
-export default function objectComparer(obj: object, model: object, strict = false): boolean {
+function objectComparer(obj: object, model: object, strict = false): boolean {
   return Object.entries(model).every(([key, value]) => {
     if (isAnObject(value)) {
       return objectComparer(obj[key], model[key]);
@@ -10,3 +10,13 @@ export default function objectComparer(obj: object, model: object, strict = fals
     return false;
   });
 }
+
+export function hasTheSameStructure(obj: object, model: object) {
+  return objectComparer(obj, model);
+}
+
+export function hasTheSameModel(obj: object, model: object) {
+  return objectComparer(obj, model, true);
+}
+
+export default {hasTheSameStructure, hasTheSameModel};
